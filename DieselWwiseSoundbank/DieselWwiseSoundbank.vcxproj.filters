@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Archivos de origen">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Archivos de encabezado">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Archivos de recursos">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Archivos de origen\src">
+      <UniqueIdentifier>{9a4d4ff5-a773-4a1c-aa6c-cc2fcbd55726}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\src">
+      <UniqueIdentifier>{8f783ac1-709f-41d9-ba34-a878f75b96d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\src\HIRC">
+      <UniqueIdentifier>{d474e749-5c06-4537-a925-d773fd3b8e34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\src\HIRC">
+      <UniqueIdentifier>{c9ef738b-4209-4003-a55f-6a861ee66921}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DieselWwiseSoundbank.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HIRC\action.h">
+      <Filter>Archivos de encabezado\src\HIRC</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HIRC\actor_mixer.h">
+      <Filter>Archivos de encabezado\src\HIRC</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HIRC\attenuation.h">
+      <Filter>Archivos de encabezado\src\HIRC</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HIRC\common.h">
+      <Filter>Archivos de encabezado\src\HIRC</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HIRC\event.h">
+      <Filter>Archivos de encabezado\src\HIRC</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HIRC\fx_share_set.h">
+      <Filter>Archivos de encabezado\src\HIRC</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HIRC\layer_container.h">
+      <Filter>Archivos de encabezado\src\HIRC</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HIRC\random_sequence_controller.h">
+      <Filter>Archivos de encabezado\src\HIRC</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HIRC\sound.h">
+      <Filter>Archivos de encabezado\src\HIRC</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HIRC\switch_container.h">
+      <Filter>Archivos de encabezado\src\HIRC</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ak_types.h">
+      <Filter>Archivos de encabezado\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bkhd.h">
+      <Filter>Archivos de encabezado\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\data.h">
+      <Filter>Archivos de encabezado\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\didx.h">
+      <Filter>Archivos de encabezado\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\globals.h">
+      <Filter>Archivos de encabezado\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hirc.h">
+      <Filter>Archivos de encabezado\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\reader.h">
+      <Filter>Archivos de encabezado\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\soundbank.h">
+      <Filter>Archivos de encabezado\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stid.h">
+      <Filter>Archivos de encabezado\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\writer.h">
+      <Filter>Archivos de encabezado\src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\HIRC\action.cpp">
+      <Filter>Archivos de origen\src\HIRC</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HIRC\actor_mixer.cpp">
+      <Filter>Archivos de origen\src\HIRC</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HIRC\attenuation.cpp">
+      <Filter>Archivos de origen\src\HIRC</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HIRC\common.cpp">
+      <Filter>Archivos de origen\src\HIRC</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HIRC\event.cpp">
+      <Filter>Archivos de origen\src\HIRC</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HIRC\fx_share_set.cpp">
+      <Filter>Archivos de origen\src\HIRC</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HIRC\layer_container.cpp">
+      <Filter>Archivos de origen\src\HIRC</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HIRC\random_sequence_controller.cpp">
+      <Filter>Archivos de origen\src\HIRC</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HIRC\sound.cpp">
+      <Filter>Archivos de origen\src\HIRC</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HIRC\switch_container.cpp">
+      <Filter>Archivos de origen\src\HIRC</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ak_types.cpp">
+      <Filter>Archivos de origen\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bkhd.cpp">
+      <Filter>Archivos de origen\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\data.cpp">
+      <Filter>Archivos de origen\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\didx.cpp">
+      <Filter>Archivos de origen\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hirc.cpp">
+      <Filter>Archivos de origen\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\reader.cpp">
+      <Filter>Archivos de origen\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\soundbank.cpp">
+      <Filter>Archivos de origen\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stid.cpp">
+      <Filter>Archivos de origen\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\writer.cpp">
+      <Filter>Archivos de origen\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
