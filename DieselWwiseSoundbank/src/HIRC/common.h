@@ -81,6 +81,7 @@ namespace Wwise {
 	// Sound
 
 	struct Plugin {
+		uint32_t data;
 		PluginType type;
 		PluginCompany company;
 
@@ -152,6 +153,7 @@ namespace Wwise {
 		std::optional<std::vector<FXChunkFXParams>> fx_chunks;
 
 		void Convert(Writer& writer);
+		ParameterNodeFXParams() = default;
 		ParameterNodeFXParams(Reader& reader);
 	};
 
@@ -411,7 +413,7 @@ namespace Wwise {
 	struct StateGroup {
 		uint32_t state_group_id; // hashable
 		uint8_t state_sync_type;
-		std::variant<uint16_t, uint32_t> num_states; // depends on versioning
+		std::variant<uint16_t, uint8_t> num_states; // depends on versioning
 		std::vector<State> states;
 
 		void Convert(Writer& writer);
@@ -419,7 +421,7 @@ namespace Wwise {
 	};
 
 	struct StatePropertyNew {
-		uint32_t property_id; //AkRTPC_ParameterID
+		uint8_t property_id; //AkRTPC_ParameterID
 		uint8_t accum_type; //AkRtpcAccum
 
 		// 2022
@@ -481,6 +483,7 @@ namespace Wwise {
 		std::optional<uint32_t> feedback_bus_id;
 
 		void Convert(Writer& writer);
+		BaseParams() = default;
 		BaseParams(Reader& reader);
 	};
 
@@ -495,5 +498,104 @@ namespace Wwise {
 		void Convert(Writer& writer);
 		Children() = default;
 		Children(Reader& reader);
+	};
+
+	struct MusicTrackFlags {
+		unsigned char : 1;
+		bool override_parent_midi_tempo : 1;
+		bool override_parent_midi_target : 1;
+		bool midi_target_type_bus : 1;
+		unsigned char : 4;
+	};
+
+	struct MusicStinger {
+		uint32_t trigger_id;
+		uint32_t segment_id;
+		uint32_t sync_play_at;
+		uint32_t cue_filter_hash;
+		uint32_t dont_repeat_time;
+		uint32_t num_segment_look_ahead;
+
+		void Convert(Writer& writer);
+		MusicStinger() = default;
+		MusicStinger(Reader& reader);
+	};
+
+	struct MusicNodeParams {
+		// + 2013
+		std::optional<MusicTrackFlags> flags;
+
+		BaseParams base_params;
+		Children children;
+
+		double grid_period;
+		double grid_offset;
+		float tempo;
+		uint8_t time_signature_num_beats_bar;
+		uint8_t time_signature_beat_value;
+
+		uint8_t meter_info_flag;
+		uint32_t num_stingers;
+		std::vector<MusicStinger> stingers;
+
+		void Convert(Writer& writer);
+		MusicNodeParams() = default;
+		MusicNodeParams(Reader& reader);
+	};
+
+	struct MusicTransitionRule {
+		uint32_t num_sources;
+		std::vector<int32_t> source_ids;
+		uint32_t num_destinations;
+		std::vector<int32_t> destination_ids;
+
+		int32_t transition_time_dst;
+		CurveInterpolation fade_curve_dst;
+		int32_t fade_offset_dst;
+		uint32_t sync_type_dst;
+		uint32_t cue_filter_hash_dst;
+		uint8_t play_post_exit_dst;
+
+		int32_t transition_time_src;
+		CurveInterpolation fade_curve_src;
+		int32_t fade_offset_src;
+		uint32_t cue_filter_hash_src;
+		uint32_t jump_to_id;
+
+		// 2022
+		std::optional<uint16_t> jump_to_type;
+
+		uint16_t entry_type;
+		uint8_t play_pre_entry;
+		uint8_t destination_match_source_cue_name;
+		uint8_t allocate_transition_object_flag;
+
+		// if allocate_transition_object_flag != 0
+		std::optional<uint32_t> trans_object_segment_id;
+
+		std::optional<int32_t> trans_object_fadein_time;
+		std::optional<CurveInterpolation> trans_object_fadein_fade_curve;
+		std::optional<int32_t> trans_object_fadein_fade_offset;
+
+		std::optional<int32_t> trans_object_fadeout_time;
+		std::optional<CurveInterpolation> trans_object_fadeout_fade_curve;
+		std::optional<int32_t> trans_object_fadeout_fade_offset;
+
+		std::optional<uint8_t> trans_object_play_pre_entry;
+		std::optional<uint8_t> trans_object_play_post_exit;
+
+		void Convert(Writer& writer);
+		MusicTransitionRule() = default;
+		MusicTransitionRule(Reader& reader);
+	};
+
+	struct MusicTransitionNode {
+		MusicNodeParams node_params;
+		uint32_t num_rules;
+		std::vector<MusicTransitionRule> transition_rules;
+
+		void Convert(Writer& writer);
+		MusicTransitionNode() = default;
+		MusicTransitionNode(Reader& reader);
 	};
 }

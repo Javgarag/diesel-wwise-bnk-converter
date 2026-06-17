@@ -34,4 +34,16 @@ namespace Wwise {
 	void Reader::CloseFile() {
 		stream.close();
 	}
+
+	std::string Reader::ReadNullTerminatedString() {
+		std::string result;
+		char c;
+
+		while (stream.get(c) && c != '\0')
+		{
+			result += c;
+		}
+
+		return result;
+	}
 };

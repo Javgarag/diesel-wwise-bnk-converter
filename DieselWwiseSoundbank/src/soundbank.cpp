@@ -11,7 +11,7 @@ namespace Wwise {
 		// BKHD		
 		bank_header = BKHD(reader);
 		if (bank_header.section_info.header != Header::BKHD) {
-			throw std::exception("File is not a Wwise Soundbank (.bnk)!");
+			throw std::runtime_error("File is not a Wwise Soundbank (.bnk)!");
 		}
 		switch (VERSION) {
 		case BankVersion::V2013:
@@ -21,7 +21,7 @@ namespace Wwise {
 		case BankVersion::V2022:
 			break;
 		default:
-			throw std::exception("Unsupported Soundbank version! Supported versions: 2013 (88), 2015 (113), 2022 (145)");
+			throw std::runtime_error("Unsupported Soundbank version! Supported versions: 2013 (88), 2015 (113), 2022 (145)");
 		}
 
 		// DIDX
@@ -40,7 +40,7 @@ namespace Wwise {
 		std::cout << "Searching for HIRC header..." << std::endl;
 		size_t hirc_address = reader.SearchAddress(Header::HIRC);
 		if (!hirc_address) {
-			throw std::exception("Soundbank has no readable objects!");
+			throw std::runtime_error("Soundbank has no readable objects!");
 		}
 		reader.Seek(hirc_address);
 		objects = HIRC(reader);
@@ -57,12 +57,12 @@ namespace Wwise {
 	};
 
 	bool Soundbank::Convert(BankVersion new_version, const std::filesystem::path& file_path) {
-		// Todo: convert AkRTPC_ParameterID values
+		// Todo: convert AkRTPC_ParameterID values, FxCustom/FxShareSet values (see car_falcogini)
 
 		CONVERT_VERSION = new_version;
 
 		if (CONVERT_VERSION <= VERSION) {
-			throw std::exception("Converted bank version cannot be lower than or equal to the current version!");
+			throw std::runtime_error("Converted bank version cannot be lower than or equal to the current version!");
 		}
 
 		writer = Writer(file_path);

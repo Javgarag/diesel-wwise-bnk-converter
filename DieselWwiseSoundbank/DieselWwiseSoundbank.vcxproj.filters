@@ -93,6 +93,18 @@
     <ClInclude Include="src\writer.h">
       <Filter>Archivos de encabezado\src</Filter>
     </ClInclude>
+    <ClInclude Include="src\HIRC\music_segment.h">
+      <Filter>Archivos de encabezado\src\HIRC</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HIRC\music_random_sequence_controller.h">
+      <Filter>Archivos de encabezado\src\HIRC</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HIRC\music_switch.h">
+      <Filter>Archivos de encabezado\src\HIRC</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HIRC\music_track.h">
+      <Filter>Archivos de encabezado\src\HIRC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\HIRC\action.cpp">
@@ -151,6 +163,18 @@
     </ClCompile>
     <ClCompile Include="src\writer.cpp">
       <Filter>Archivos de origen\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HIRC\music_segment.cpp">
+      <Filter>Archivos de origen\src\HIRC</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HIRC\music_track.cpp">
+      <Filter>Archivos de origen\src\HIRC</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HIRC\music_switch.cpp">
+      <Filter>Archivos de origen\src\HIRC</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HIRC\music_random_sequence_controller.cpp">
+      <Filter>Archivos de origen\src\HIRC</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

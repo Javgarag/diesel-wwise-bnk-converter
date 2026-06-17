@@ -55,7 +55,7 @@ namespace Wwise {
         MusicSegment,
         MusicTrack,
         MusicSwitch,
-        MusicRandomSequence,
+        MusicRandomOrSequence,
         Attenuation,
         DialogueEvent,
         FxShareSet,
@@ -272,7 +272,7 @@ namespace Wwise {
 
     // Plugins
 
-    enum class PluginType : uint16_t {
+    enum class PluginType : uint8_t { // only 4 used
         None,
         Codec,
         Source,
@@ -285,7 +285,7 @@ namespace Wwise {
         Metadata
     };
 
-    enum class PluginCompany : uint16_t { // actually 24
+    enum class PluginCompany : uint16_t { // only 12 used
         Audiokinetic = 0,
         AudiokineticExternal,
         Plugin = 64,

@@ -141,6 +141,28 @@ namespace Wwise {
 		except_params.Convert(writer);
 	}
 
+	HIRCActionBypassFX::HIRCActionBypassFX(Reader& reader) {
+		reader.Read(&is_bypass);
+		reader.Read(&target_mask);
+		except_params = ActionExceptParams(reader);
+	}
+	
+	void HIRCActionBypassFX::Convert(Writer& writer) {
+		writer << is_bypass;
+		writer << target_mask;
+		except_params.Convert(writer);
+	}
+
+	HIRCActionSetSwitch::HIRCActionSetSwitch(Reader& reader) {
+		reader.Read(&switch_group_id);
+		reader.Read(&switch_state_id);
+	}
+
+	void HIRCActionSetSwitch::Convert(Writer& writer) {
+		writer << switch_group_id;
+		writer << switch_state_id;
+	}
+
 	HIRCActionBase::HIRCActionBase(Reader& reader)
 		: item_base(reader)
 	{
@@ -165,9 +187,22 @@ namespace Wwise {
 		case 0x2100:
 			// "PlayEvent" action
 			return;
+		case 0x1900:
+			// "SetSwitch" action
+			action = HIRCActionSetSwitch(reader);
+			return;
 		}
 
-		reader.Read(&fade_curve, sizeof(uint8_t));
+		switch (action_type_simple) {
+		case 0x1A00: // bypass
+			action = HIRCActionBypassFX(reader);
+			break;
+		case 0x1B00: // bypass reset
+			action = HIRCActionBypassFX(reader);
+			break;
+		default:
+			reader.Read(&fade_curve, sizeof(uint8_t));
+		}
 
 		switch (action_type_simple) {
 		case 0x0100:
@@ -184,34 +219,34 @@ namespace Wwise {
 			break;
 		case 0x0800: // pitch
 			action = HIRCActionSetProperty(reader);
-			return;
+			break;
 		case 0x0900: // pitch reset
 			action = HIRCActionSetProperty(reader);
-			return;
+			break;
 		case 0x0A00: // volume
 			action = HIRCActionSetProperty(reader);
-			return;
+			break;
 		case 0x0B00: // volume reset
 			action = HIRCActionSetProperty(reader);
-			return;
+			break;
 		case 0x0C00: // bus volume
 			action = HIRCActionSetProperty(reader);
-			return;
+			break;
 		case 0x0D00: // bus volume reset
 			action = HIRCActionSetProperty(reader);
-			return;
+			break;
 		case 0x0E00: // lpf
 			action = HIRCActionSetProperty(reader);
-			return;
+			break;
 		case 0x0F00: // lpf reset
 			action = HIRCActionSetProperty(reader);
-			return;
+			break;
 		case 0x2000: // hpf
 			action = HIRCActionSetProperty(reader);
-			return;
+			break;
 		case 0x3000: // hpf reset
 			action = HIRCActionSetProperty(reader);
-			return;
+			break;
 		}
 
 		// safety padding
@@ -246,10 +281,22 @@ namespace Wwise {
 			// "PlayEvent" action
 			item_base.UpdateSize(writer);
 			return;
+		case 0x1900:
+			// "SetSwitch" action
+			std::get<HIRCActionSetSwitch>(action).Convert(writer);
+			item_base.UpdateSize(writer);
+			return;
 		}
 
-
-		writer.Write(fade_curve, sizeof(uint8_t));
+		switch (action_type_simple) {
+		case 0x1A00: // bypass
+			break;
+		case 0x1B00: // bypass reset
+			break;
+		default:
+			writer.Write(fade_curve, sizeof(uint8_t));
+		}
+		
 		std::visit([&](auto& action) {
 			action.Convert(writer);
 		}, action);

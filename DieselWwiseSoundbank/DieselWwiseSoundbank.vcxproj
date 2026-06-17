@@ -138,8 +138,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;DIESELWWISESOUNDBANK_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -165,6 +166,10 @@
     <ClInclude Include="src\HIRC\event.h" />
     <ClInclude Include="src\HIRC\fx_share_set.h" />
     <ClInclude Include="src\HIRC\layer_container.h" />
+    <ClInclude Include="src\HIRC\music_random_sequence_controller.h" />
+    <ClInclude Include="src\HIRC\music_segment.h" />
+    <ClInclude Include="src\HIRC\music_switch.h" />
+    <ClInclude Include="src\HIRC\music_track.h" />
     <ClInclude Include="src\HIRC\random_sequence_controller.h" />
     <ClInclude Include="src\HIRC\sound.h" />
     <ClInclude Include="src\HIRC\switch_container.h" />
@@ -186,6 +191,10 @@
     <ClCompile Include="src\HIRC\event.cpp" />
     <ClCompile Include="src\HIRC\fx_share_set.cpp" />
     <ClCompile Include="src\HIRC\layer_container.cpp" />
+    <ClCompile Include="src\HIRC\music_random_sequence_controller.cpp" />
+    <ClCompile Include="src\HIRC\music_segment.cpp" />
+    <ClCompile Include="src\HIRC\music_switch.cpp" />
+    <ClCompile Include="src\HIRC\music_track.cpp" />
     <ClCompile Include="src\HIRC\random_sequence_controller.cpp" />
     <ClCompile Include="src\HIRC\sound.cpp" />
     <ClCompile Include="src\HIRC\switch_container.cpp" />

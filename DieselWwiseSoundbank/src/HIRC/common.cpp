@@ -125,13 +125,14 @@ namespace Wwise {
 	// Sound
 
 	Plugin::Plugin(Reader& reader) {
-		type = reader.Read<PluginType>();
-		company = reader.Read<PluginCompany>();
+		reader.Read(&data);
+
+		type = (PluginType)(data & 0x0000000F);
+		company = (PluginCompany)((data >> 1) & 0x00000FFF);
 	}
 
 	void Plugin::Convert(Writer& writer) {
-		writer << type;
-		writer << company;
+		writer << data;
 	}
 
 	SourceData::SourceData(Reader& reader)
@@ -815,9 +816,8 @@ namespace Wwise {
 	StateGroup::StateGroup(Reader& reader) {
 		reader.Read(&state_group_id);
 		reader.Read(&state_sync_type);
-		//reader.Read(&state_group_id); ??
 		if (VERSION == BankVersion::V2022) {
-			auto& v = num_states.emplace<uint32_t>();
+			auto& v = num_states.emplace<uint8_t>();
 			reader.Read(&v);;
 		}
 		else {
@@ -836,7 +836,7 @@ namespace Wwise {
 		writer << state_group_id;
 		writer << state_sync_type;
 		if (CONVERT_VERSION == BankVersion::V2022) {
-			writer << std::get<uint32_t>(num_states);
+			writer << (uint8_t)std::get<uint16_t>(num_states);
 		}
 		else {
 			writer << std::get<uint16_t>(num_states);
@@ -1011,6 +1011,174 @@ namespace Wwise {
 		writer << num_children;
 		for (uint32_t i = 0; i < num_children; i++) {
 			writer << child_ids[i];
+		}
+	}
+
+	MusicStinger::MusicStinger(Reader& reader) {
+		reader.Read(&trigger_id);
+		reader.Read(&segment_id);
+		reader.Read(&sync_play_at);
+		reader.Read(&cue_filter_hash);
+		reader.Read(&dont_repeat_time);
+		reader.Read(&num_segment_look_ahead);
+	}
+
+	void MusicStinger::Convert(Writer& writer) {
+		writer << trigger_id;
+		writer << segment_id;
+		writer << sync_play_at;
+		writer << cue_filter_hash;
+		writer << dont_repeat_time;
+		writer << num_segment_look_ahead;
+	}
+
+	MusicNodeParams::MusicNodeParams(Reader& reader) {
+		if (VERSION > BankVersion::V2013) {
+			flags = reader.Read<MusicTrackFlags>(sizeof(uint8_t));
+		}
+
+		base_params = BaseParams(reader);
+		children = Children(reader);
+
+		reader.Read(&grid_period);
+		reader.Read(&grid_offset);
+		reader.Read(&tempo);
+		reader.Read(&time_signature_num_beats_bar);
+		reader.Read(&time_signature_beat_value);
+		reader.Read(&meter_info_flag);
+		reader.Read(&num_stingers);
+		for (uint32_t i = 0; i < num_stingers; i++) {
+			stingers.push_back(MusicStinger(reader));
+		}
+	}
+
+	void MusicNodeParams::Convert(Writer& writer) {
+		writer << (uint8_t)0; // flags
+
+		base_params.Convert(writer);
+		children.Convert(writer);
+
+		writer << grid_period;
+		writer << grid_offset;
+		writer << tempo;
+		writer << time_signature_num_beats_bar;
+		writer << time_signature_beat_value;
+		writer << meter_info_flag;
+		writer << num_stingers;
+		for (uint32_t i = 0; i < num_stingers; i++) {
+			stingers[i].Convert(writer);
+		}
+	}
+
+	MusicTransitionRule::MusicTransitionRule(Reader& reader) {
+		reader.Read(&num_sources);
+		for (uint32_t i = 0; i < num_sources; i++) {
+			source_ids.push_back(reader.Read<int32_t>());
+		}
+
+		reader.Read(&num_destinations);
+		for (uint32_t i = 0; i < num_destinations; i++) {
+			destination_ids.push_back(reader.Read<int32_t>());
+		}
+
+		reader.Read(&transition_time_dst);
+		reader.Read(&fade_curve_dst);
+		reader.Read(&fade_offset_dst);
+		reader.Read(&sync_type_dst);
+		reader.Read(&cue_filter_hash_dst);
+		reader.Read(&play_post_exit_dst);
+
+		reader.Read(&transition_time_src);
+		reader.Read(&fade_curve_src);
+		reader.Read(&fade_offset_src);
+		reader.Read(&cue_filter_hash_src);
+		reader.Read(&jump_to_id);
+		if (VERSION == BankVersion::V2022) {
+			jump_to_type = reader.Read<uint16_t>();
+		}
+		reader.Read(&entry_type);
+		reader.Read(&play_pre_entry);
+		reader.Read(&destination_match_source_cue_name);
+		reader.Read(&allocate_transition_object_flag);
+
+		if (allocate_transition_object_flag != 0) {
+			trans_object_segment_id = reader.Read<uint32_t>();
+			
+			trans_object_fadein_time = reader.Read<uint32_t>();
+			trans_object_fadein_fade_curve = reader.Read<CurveInterpolation>();
+			trans_object_fadein_fade_offset = reader.Read<uint32_t>();
+
+			trans_object_fadeout_time = reader.Read<uint32_t>();
+			trans_object_fadeout_fade_curve = reader.Read<CurveInterpolation>();
+			trans_object_fadeout_fade_offset = reader.Read<uint32_t>();
+
+			trans_object_play_pre_entry = reader.Read<uint8_t>();
+			trans_object_play_post_exit = reader.Read<uint8_t>();
+		}
+	}
+
+	void MusicTransitionRule::Convert(Writer& writer) {
+		writer << num_sources;
+		for (uint32_t i = 0; i < num_sources; i++) {
+			writer << source_ids[i];
+		}
+
+		writer << num_destinations;
+		for (uint32_t i = 0; i < num_sources; i++) {
+			writer << destination_ids[i];
+		}
+
+		writer << transition_time_dst;
+		writer << fade_curve_dst;
+		writer << fade_offset_dst;
+		writer << sync_type_dst;
+		writer << cue_filter_hash_dst;
+		writer << play_post_exit_dst;
+
+		writer << transition_time_src;
+		writer << fade_curve_src;
+		writer << fade_offset_src;
+		writer << cue_filter_hash_src;
+		writer << jump_to_id;
+
+		if (CONVERT_VERSION == BankVersion::V2022) {
+			writer << (uint16_t)0; // jump_to_type default for older
+		}
+
+		writer << entry_type;
+		writer << play_pre_entry;
+		writer << destination_match_source_cue_name;
+		writer << allocate_transition_object_flag;
+		if (allocate_transition_object_flag != 0) {
+			writer << trans_object_segment_id.value();
+
+			writer << trans_object_fadein_time.value();
+			writer << trans_object_fadein_fade_curve.value();
+			writer << trans_object_fadein_fade_offset.value();
+
+			writer << trans_object_fadeout_time.value();
+			writer << trans_object_fadeout_fade_curve.value();
+			writer << trans_object_fadeout_fade_offset.value();
+
+			writer << trans_object_play_pre_entry.value();
+			writer << trans_object_play_post_exit.value();
+		}
+	}
+
+	MusicTransitionNode::MusicTransitionNode(Reader& reader) 
+		: node_params(reader)
+	{
+		reader.Read(&num_rules);
+		for (uint32_t i = 0; i < num_rules; i++) {
+			transition_rules.push_back(MusicTransitionRule(reader));
+		}
+	}
+
+	void MusicTransitionNode::Convert(Writer& writer) {
+		node_params.Convert(writer);
+		writer << num_rules;
+		for (uint32_t i = 0; i < num_rules; i++) {
+			transition_rules[i].Convert(writer);
 		}
 	}
 }

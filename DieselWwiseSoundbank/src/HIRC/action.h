@@ -101,13 +101,32 @@ namespace Wwise {
 		HIRCActionSetProperty(Reader& reader);
 	};
 
+	struct HIRCActionBypassFX {
+		uint8_t is_bypass;
+		uint8_t target_mask;
+		ActionExceptParams except_params;
+
+		void Convert(Writer& writer);
+		HIRCActionBypassFX() = default;
+		HIRCActionBypassFX(Reader& reader);
+	};
+
+	struct HIRCActionSetSwitch {
+		uint32_t switch_group_id;
+		uint32_t switch_state_id;
+
+		void Convert(Writer& writer);
+		HIRCActionSetSwitch() = default;
+		HIRCActionSetSwitch(Reader& reader);
+	};
+
 	struct HIRCActionBase {
 		HIRCItemGeneric item_base;
 		ActionType action_type;
 
 		ActionInitialValues initial_values;
 		ActionFadeCurve fade_curve;
-		std::variant<HIRCActionPlay, HIRCActionStop, HIRCActionSetGameParameter, HIRCActionSetProperty> action;
+		std::variant<HIRCActionPlay, HIRCActionStop, HIRCActionSetGameParameter, HIRCActionSetProperty, HIRCActionBypassFX, HIRCActionSetSwitch> action;
 
 		void Convert(Writer& writer);
 		HIRCActionBase(Reader& reader);

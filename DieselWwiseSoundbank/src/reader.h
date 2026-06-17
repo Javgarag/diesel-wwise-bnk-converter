@@ -60,6 +60,7 @@ namespace Wwise {
 		void PushCurrentPos();
 		void PopLastPos();
 		void Seek(size_t address);
+		std::string ReadNullTerminatedString();
 		void CloseFile();
 
 		Reader() = default;
