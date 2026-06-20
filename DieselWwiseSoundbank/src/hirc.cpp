@@ -77,6 +77,14 @@ namespace Wwise {
 					std::cout << "Music Switch" << std::endl;
 					items.push_back(HIRCMusicSwitch(reader));
 					break;
+				case HIRCItemTypeOld::Bus:
+					std::cout << "Audio Bus" << std::endl;
+					items.push_back(HIRCBus(reader));
+					break;
+				case HIRCItemTypeOld::AuxiliaryBus:
+					std::cout << "Auxiliary Bus" << std::endl;
+					items.push_back(HIRCBus(reader));
+					break;
 				default:
 					std::cout << "Unknown! will be unable to convert successfully" << std::endl;
 					items.push_back(HIRCUnknown(reader));
@@ -140,6 +148,18 @@ namespace Wwise {
 					std::cout << "Music Switch" << std::endl;
 					items.push_back(HIRCMusicSwitch(reader));
 					break;
+				case HIRCItemTypeNew::AudioBus:
+					std::cout << "Audio Bus" << std::endl;
+					items.push_back(HIRCBus(reader));
+					break;
+				case HIRCItemTypeNew::AuxiliaryBus:
+					std::cout << "Auxiliary Bus" << std::endl;
+					items.push_back(HIRCBus(reader));
+					break;
+				case HIRCItemTypeNew::AudioDevice:
+					std::cout << "Audio Device" << std::endl;
+					items.push_back(HIRCAudioDevice(reader));
+					break;
 				default:
 					std::cout << "Unknown! will be unable to convert successfully" << std::endl;
 					items.push_back(HIRCUnknown(reader));
@@ -150,6 +170,7 @@ namespace Wwise {
 
 	void HIRC::Convert(Writer& writer) {
 		section_info.Convert(writer);
+		num_items_pos = writer.Tell();
 		writer << num_items;
 
 		// hand off conversion to individual objects
@@ -216,6 +237,15 @@ namespace Wwise {
 					std::cout << "Converting Music Switch" << std::endl;
 					item.Convert(writer);
 				},
+				[&](HIRCBus& item) {
+					std::cout << "Converting Bus (master/auxiliary)" << std::endl;
+					if (i == 0 && CONVERT_VERSION == BankVersion::V2022) {
+						std::cout << "\tDetected init.bnk bank; inserting default AudioDevices" << std::endl;
+						HIRCAudioDevice::CreateDefaults(writer);
+						this->UpdateItemCount(num_items + 2, writer);
+					}
+					item.Convert(writer);
+				},
 				[&](HIRCUnknown& item) {
 					throw std::runtime_error("ERROR: Unable to convert unknown item type!");
 				},
@@ -227,5 +257,12 @@ namespace Wwise {
 		}
 
 		section_info.UpdateSize(writer);
+	}
+
+	void HIRC::UpdateItemCount(uint32_t new_count, Writer& writer) {
+		writer.PushCurrentPos();
+		writer.Seek(num_items_pos);
+		writer << new_count;
+		writer.PopLastPos();
 	}
 }

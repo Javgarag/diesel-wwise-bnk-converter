@@ -27,7 +27,7 @@ namespace Wwise {
 		writer << bank_id;
 		writer << language_id;
 		writer << feedback_in_bank;
-		writer << project_id;
+		writer << project_id; // project ID is changed when migrating between versions but it doesn't affect loading
 
 		if (CONVERT_VERSION == BankVersion::V2022) {
 			writer << (uint32_t)0; // soundbank_type. 0 == User

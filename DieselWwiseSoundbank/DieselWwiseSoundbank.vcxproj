@@ -162,6 +162,8 @@
     <ClInclude Include="src\HIRC\action.h" />
     <ClInclude Include="src\HIRC\actor_mixer.h" />
     <ClInclude Include="src\HIRC\attenuation.h" />
+    <ClInclude Include="src\HIRC\audio_device.h" />
+    <ClInclude Include="src\HIRC\bus.h" />
     <ClInclude Include="src\HIRC\common.h" />
     <ClInclude Include="src\HIRC\event.h" />
     <ClInclude Include="src\HIRC\fx_share_set.h" />
@@ -187,6 +189,8 @@
     <ClCompile Include="src\HIRC\action.cpp" />
     <ClCompile Include="src\HIRC\actor_mixer.cpp" />
     <ClCompile Include="src\HIRC\attenuation.cpp" />
+    <ClCompile Include="src\HIRC\audio_device.cpp" />
+    <ClCompile Include="src\HIRC\bus.cpp" />
     <ClCompile Include="src\HIRC\common.cpp" />
     <ClCompile Include="src\HIRC\event.cpp" />
     <ClCompile Include="src\HIRC\fx_share_set.cpp" />

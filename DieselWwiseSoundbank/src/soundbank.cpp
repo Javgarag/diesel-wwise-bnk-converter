@@ -57,7 +57,7 @@ namespace Wwise {
 	};
 
 	bool Soundbank::Convert(BankVersion new_version, const std::filesystem::path& file_path) {
-		// Todo: bus conversion
+		// Todo: last few sections on init.bnk
 
 		CONVERT_VERSION = new_version;
 

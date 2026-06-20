@@ -15,6 +15,8 @@
 #include "HIRC/music_segment.h"
 #include "HIRC/music_switch.h"
 #include "HIRC/music_random_sequence_controller.h"
+#include "HIRC/bus.h"
+#include "HIRC/audio_device.h"
 
 #include <cstdint>
 #include <vector>
@@ -24,6 +26,7 @@ namespace Wwise {
 		Section section_info;
 
 		uint32_t num_items;
+		long num_items_pos = -1;
 
 		std::vector<std::variant<
 			HIRCUnknown, 
@@ -39,11 +42,13 @@ namespace Wwise {
 			HIRCMusicTrack, 
 			HIRCMusicSegment, 
 			HIRCMusicRandomSequenceController,
-			HIRCMusicSwitch>> items;
-
-		void Convert(Writer& writer);
+			HIRCMusicSwitch,
+			HIRCBus,
+			HIRCAudioDevice>> items;
 
 		HIRC() = default;
 		HIRC(Reader& reader);
+		void Convert(Writer& writer);
+		void UpdateItemCount(uint32_t new_count, Writer& writer);
 	};
 }
