@@ -247,8 +247,8 @@ namespace Wwise {
 					item.Convert(writer);
 				},
 				[&](HIRCUnknown& item) {
-					std::cout << "ERROR: Unable to convert unknown item type! Report?" << std::endl;
-					throw std::runtime_error("ERROR: Unable to convert unknown item type!");
+					std::cerr << "ERROR: Unable to convert unknown item type! Report?" << std::endl;
+					std::exit(EXIT_FAILURE);
 				},
 				[&](auto& item)
 				{

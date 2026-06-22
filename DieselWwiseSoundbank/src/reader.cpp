@@ -10,8 +10,8 @@ namespace Wwise {
 		: stream(file_path, std::ios::in | std::ios::binary)
 	{
 		if (!stream.is_open()) {
-			std::cout << "ERROR: Failed to open file" << std::endl;
-			throw std::runtime_error("Failed to open file");
+			std::cerr << "ERROR: Failed to open file" << std::endl;
+			std::exit(EXIT_FAILURE);
 		}
 	};
 

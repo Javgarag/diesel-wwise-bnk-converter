@@ -11,8 +11,8 @@ namespace Wwise {
 		// BKHD		
 		bank_header = BKHD(reader);
 		if (bank_header.section_info.header != Header::BKHD) {
-			std::cout << "ERROR: File is not a Wwise Soundbank (.bnk)!" << std::endl;
-			throw std::runtime_error("File is not a Wwise Soundbank (.bnk)!");
+			std::cerr << "ERROR: File is not a Wwise Soundbank (.bnk)!" << std::endl;
+			std::exit(EXIT_FAILURE);
 		}
 		switch (VERSION) {
 		case BankVersion::V2013:
@@ -22,8 +22,8 @@ namespace Wwise {
 		case BankVersion::V2022:
 			break;
 		default:
-			std::cout << "ERROR: Unsupported Soundbank version! Supported versions: 2013 (88), 2015 (113), 2022 (145)" << std::endl;
-			throw std::runtime_error("Unsupported Soundbank version! Supported versions: 2013 (88), 2015 (113), 2022 (145)");
+			std::cerr << "ERROR: Unsupported Soundbank version! Supported versions: 2013 (88), 2015 (113), 2022 (145)" << std::endl;
+			std::exit(EXIT_FAILURE);
 		}
 
 		// STMG (init.bnk)
@@ -48,8 +48,8 @@ namespace Wwise {
 		std::cout << "Searching for HIRC header..." << std::endl;
 		size_t hirc_address = reader.SearchAddress(Header::HIRC);
 		if (!hirc_address) {
-			std::cout << "ERROR: Soundbank has no readable objects!" << std::endl;
-			throw std::runtime_error("Soundbank has no readable objects!");
+			std::cerr << "ERROR: Soundbank has no readable objects!" << std::endl;
+			std::exit(EXIT_FAILURE);
 		}
 		reader.Seek(hirc_address);
 		objects = HIRC(reader);
@@ -73,13 +73,15 @@ namespace Wwise {
 	};
 
 	bool Soundbank::Convert(BankVersion new_version, const std::filesystem::path& file_path) {
-		// Todo: last few sections on init.bnk
-
 		CONVERT_VERSION = new_version;
+		if (CONVERT_VERSION != BankVersion::V2013 && CONVERT_VERSION != BankVersion::V2015 && CONVERT_VERSION != BankVersion::V2022) {
+			std::cerr << "ERROR: Unsupported converted version; supported versions: 2013 (88), 2015 (113), 2022 (145)" << std::endl;
+			std::exit(EXIT_FAILURE);
+		}
 
 		if (CONVERT_VERSION <= VERSION) {
-			std::cout << "ERROR: Conversion version cannot be lower than or equal to the current version!" << std::endl;
-			throw std::runtime_error("Converted bank version cannot be lower than or equal to the current version!");
+			std::cerr << "ERROR: Conversion version cannot be lower than or equal to the current version!" << std::endl;
+			std::exit(EXIT_FAILURE);
 		}
 
 		writer = Writer(file_path);
