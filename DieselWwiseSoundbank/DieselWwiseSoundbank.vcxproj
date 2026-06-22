@@ -157,6 +157,7 @@
     <ClInclude Include="src\bkhd.h" />
     <ClInclude Include="src\data.h" />
     <ClInclude Include="src\didx.h" />
+    <ClInclude Include="src\envs.h" />
     <ClInclude Include="src\globals.h" />
     <ClInclude Include="src\hirc.h" />
     <ClInclude Include="src\HIRC\action.h" />
@@ -186,6 +187,7 @@
     <ClCompile Include="src\bkhd.cpp" />
     <ClCompile Include="src\data.cpp" />
     <ClCompile Include="src\didx.cpp" />
+    <ClCompile Include="src\envs.cpp" />
     <ClCompile Include="src\hirc.cpp" />
     <ClCompile Include="src\HIRC\action.cpp" />
     <ClCompile Include="src\HIRC\actor_mixer.cpp" />

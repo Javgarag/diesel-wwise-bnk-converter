@@ -8,6 +8,7 @@ namespace Wwise {
         DATA = 0x41544144,
         STMG = 0x474D5453,
         HIRC = 0x43524948,
+        ENVS = 0x53564E45,
         STID = 0x44495453
     };
 

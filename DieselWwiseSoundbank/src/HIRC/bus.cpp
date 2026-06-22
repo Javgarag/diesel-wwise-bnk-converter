@@ -189,7 +189,7 @@ namespace Wwise {
 
 		writer << override_bus_id;
 		if (CONVERT_VERSION == BankVersion::V2022 && override_bus_id == 0) {
-			writer << (uint32_t)0xE611314A; // FNV hash for "System"; this is the default Audio Device created when converting older soundbanks and the default value for this property, if its conditions are met.
+			writer << (uint32_t)0xE611314A; // FNV hash for "System"; this is the default Audio Device created when converting older soundbanks and the default value for this property (device_share_set).
 		}
 		property_bundle.Convert(writer);
 

@@ -7,6 +7,7 @@
 #include "data.h"
 #include "stmg.h"
 #include "hirc.h"
+#include "envs.h"
 #include "stid.h"
 
 #include "reader.h"
@@ -26,6 +27,7 @@ namespace Wwise {
 		std::optional<DATA> sound_data;
 		std::optional<STMG> global_settings;
 		HIRC objects;
+		std::optional<ENVS> enviroment_settings;
 		std::optional<STID> string_mapping;
 
 		bool Convert(BankVersion new_version, const std::filesystem::path& file_path);

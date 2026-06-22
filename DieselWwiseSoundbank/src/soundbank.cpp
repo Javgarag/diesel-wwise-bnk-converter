@@ -51,6 +51,13 @@ namespace Wwise {
 		reader.Seek(hirc_address);
 		objects = HIRC(reader);
 
+		// ENVS
+		std::cout << "Searching for ENVS header..." << std::endl;
+		if (size_t envs_address = reader.SearchAddress(Header::ENVS)) {
+			reader.Seek(envs_address);
+			enviroment_settings = ENVS(reader);
+		}
+
 		// STID
 		std::cout << "Searching for STID header..." << std::endl;
 		if (size_t stid_address = reader.SearchAddress(Header::STID)) {
@@ -88,6 +95,10 @@ namespace Wwise {
 		}
 
 		objects.Convert(writer);
+
+		if (enviroment_settings) {
+			enviroment_settings.value().Convert(writer);
+		}
 
 		if (string_mapping) {
 			string_mapping.value().Convert(writer);

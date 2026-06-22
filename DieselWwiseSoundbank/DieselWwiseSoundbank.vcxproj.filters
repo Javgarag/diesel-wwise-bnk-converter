@@ -114,6 +114,9 @@
     <ClInclude Include="src\stmg.h">
       <Filter>Archivos de encabezado\src</Filter>
     </ClInclude>
+    <ClInclude Include="src\envs.h">
+      <Filter>Archivos de encabezado\src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\HIRC\action.cpp">
@@ -193,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="src\stmg.cpp">
       <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\envs.cpp">
+      <Filter>Archivos de origen\src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
