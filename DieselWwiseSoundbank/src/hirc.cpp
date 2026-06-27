@@ -1,8 +1,15 @@
 #include "hirc.h"
+#include <string>
 
 namespace Wwise {
+	auto print_verbose = [](std::string s) {
+		if (VERBOSE_MODE) {
+			std::cout << s;
+		}
+	};
+
 	HIRC::HIRC(Reader& reader) {
-		std::cout << "Reading: HIRC (Wwise objects)" << std::endl;
+		print_verbose("Reading: HIRC (Wwise objects)\n");
 		section_info = Section(reader);
 		reader.Read(&num_items);
 
@@ -10,158 +17,152 @@ namespace Wwise {
 		for (uint32_t i = 0; i < num_items; i++) {
 			reader.PushCurrentPos();
 			uint8_t item_type = reader.Read<uint8_t>();
-			std::cout << "\tItem #" << i + 1 << ": ";
+			print_verbose("\tItem #" + std::to_string(i + 1) + ": ");
 			reader.PopLastPos();
-
-#ifndef NDEBUG
-			if (i + 1 == 11) {
-				std::cout << "";
-			}
-#endif
 
 			if (VERSION != BankVersion::V2022) {
 				switch ((HIRCItemTypeOld)(item_type)) {
 				case HIRCItemTypeOld::Attenuation:
-					std::cout << "Attenuation" << std::endl;
+					print_verbose("Attenuation\n");
 					items.push_back(HIRCAttenuation(reader));
 					break;
 				case HIRCItemTypeOld::Sound:
-					std::cout << "Sound" << std::endl;
+					print_verbose("Sound\n");
 					items.push_back(HIRCSound(reader));
 					break;
 				case HIRCItemTypeOld::Action:
-					std::cout << "Action" << std::endl;
+					print_verbose("Action\n");
 					items.push_back(HIRCActionBase(reader));
 					break;
 				case HIRCItemTypeOld::Event:
-					std::cout << "Event" << std::endl;
+					print_verbose("Event\n");
 					items.push_back(HIRCEvent(reader));
 					break;
 				case HIRCItemTypeOld::RandomOrSequenceContainer:
-					std::cout << "Random / Sequence Container" << std::endl;
+					print_verbose("Random / Sequence Container\n");
 					items.push_back(HIRCRandomSequenceController(reader));
 					break;
 				case HIRCItemTypeOld::ActorMixer:
-					std::cout << "Actor Mixer" << std::endl;
+					print_verbose("Actor Mixer\n");
 					items.push_back(HIRCActorMixer(reader));
 					break;
 				case HIRCItemTypeOld::LayerContainer:
-					std::cout << "Layer Container" << std::endl;
+					print_verbose("Layer Container\n");
 					items.push_back(HIRCLayerContainer(reader));
 					break;
 				case HIRCItemTypeOld::SwitchContainer:
-					std::cout << "Switch Container" << std::endl;
+					print_verbose("Switch Container\n");
 					items.push_back(HIRCSwitchContainer(reader));
 					break;
 				case HIRCItemTypeOld::FxShareSet:
-					std::cout << "FX Share Set" << std::endl;
+					print_verbose("FX Share Set\n");
 					items.push_back(HIRCFxShareSet(reader));
 					break;
 				case HIRCItemTypeOld::FxCustom:
-					std::cout << "FX Custom" << std::endl;
+					print_verbose("FX Custom\n");
 					items.push_back(HIRCFxShareSet(reader));
 					break;
 				case HIRCItemTypeOld::MusicTrack:
-					std::cout << "Music Track" << std::endl;
+					print_verbose("Music Track\n");
 					items.push_back(HIRCMusicTrack(reader));
 					break;
 				case HIRCItemTypeOld::MusicSegment:
-					std::cout << "Music Segment" << std::endl;
+					print_verbose("Music Segment\n");
 					items.push_back(HIRCMusicSegment(reader));
 					break;
 				case HIRCItemTypeOld::MusicRandomOrSequence:
-					std::cout << "Music Random / Sequence Container" << std::endl;
+					print_verbose("Music Random / Sequence Container\n");
 					items.push_back(HIRCMusicRandomSequenceController(reader));
 					break;
 				case HIRCItemTypeOld::MusicSwitch:
-					std::cout << "Music Switch" << std::endl;
+					print_verbose("Music Switch\n");
 					items.push_back(HIRCMusicSwitch(reader));
 					break;
 				case HIRCItemTypeOld::Bus:
-					std::cout << "Audio Bus" << std::endl;
+					print_verbose("Audio Bus\n");
 					items.push_back(HIRCBus(reader));
 					break;
 				case HIRCItemTypeOld::AuxiliaryBus:
-					std::cout << "Auxiliary Bus" << std::endl;
+					print_verbose("Auxiliary Bus\n");
 					items.push_back(HIRCBus(reader));
 					break;
 				default:
-					std::cout << "Unknown! will be unable to convert successfully" << std::endl;
+					print_verbose("Unknown! will be unable to convert successfully\n");
 					items.push_back(HIRCUnknown(reader));
 				}
 			}
 			else {
 				switch ((HIRCItemTypeNew)(item_type)) {
 				case HIRCItemTypeNew::Attenuation:
-					std::cout << "Attenuation" << std::endl;
+					print_verbose("Attenuation\n");
 					items.push_back(HIRCAttenuation(reader));
 					break;
 				case HIRCItemTypeNew::Sound:
-					std::cout << "Sound" << std::endl;
+					print_verbose("Sound\n");
 					items.push_back(HIRCSound(reader));
 					break;
 				case HIRCItemTypeNew::Action:
-					std::cout << "Action" << std::endl;
+					print_verbose("Action\n");
 					items.push_back(HIRCActionBase(reader));
 					break;
 				case HIRCItemTypeNew::Event:
-					std::cout << "Event" << std::endl;
+					print_verbose("Event\n");
 					items.push_back(HIRCEvent(reader));
 					break;
 				case HIRCItemTypeNew::RandomOrSequenceContainer:
-					std::cout << "Random / Sequence Container" << std::endl;
+					print_verbose("Random / Sequence Container\n");
 					items.push_back(HIRCRandomSequenceController(reader));
 					break;
 				case HIRCItemTypeNew::ActorMixer:
-					std::cout << "Actor Mixer" << std::endl;
+					print_verbose("Actor Mixer\n");
 					items.push_back(HIRCActorMixer(reader));
 					break;
 				case HIRCItemTypeNew::LayerContainer:
-					std::cout << "Layer Container" << std::endl;
+					print_verbose("Layer Container\n");
 					items.push_back(HIRCLayerContainer(reader));
 					break;
 				case HIRCItemTypeNew::SwitchContainer:
-					std::cout << "Switch Container" << std::endl;
+					print_verbose("Switch Container\n");
 					items.push_back(HIRCSwitchContainer(reader));
 					break;
 				case HIRCItemTypeNew::FxShareSet:
-					std::cout << "FX Share Set" << std::endl;
+					print_verbose("FX Share Set\n");
 					items.push_back(HIRCFxShareSet(reader));
 					break;
 				case HIRCItemTypeNew::FxCustom:
-					std::cout << "FX Custom" << std::endl;
+					print_verbose("FX Custom\n");
 					items.push_back(HIRCFxShareSet(reader));
 					break;
 				case HIRCItemTypeNew::MusicTrack:
-					std::cout << "Music Track" << std::endl;
+					print_verbose("Music Track\n");
 					items.push_back(HIRCMusicTrack(reader));
 					break;
 				case HIRCItemTypeNew::MusicSegment:
-					std::cout << "Music Segment" << std::endl;
+					print_verbose("Music Segment\n");
 					items.push_back(HIRCMusicSegment(reader));
 					break;
 				case HIRCItemTypeNew::MusicRandomOrSequence:
-					std::cout << "Music Random / Sequence Container" << std::endl;
+					print_verbose("Music Random / Sequence Container\n");
 					items.push_back(HIRCMusicRandomSequenceController(reader));
 					break;
 				case HIRCItemTypeNew::MusicSwitch:
-					std::cout << "Music Switch" << std::endl;
+					print_verbose("Music Switch\n");
 					items.push_back(HIRCMusicSwitch(reader));
 					break;
 				case HIRCItemTypeNew::AudioBus:
-					std::cout << "Audio Bus" << std::endl;
+					print_verbose("Audio Bus\n");
 					items.push_back(HIRCBus(reader));
 					break;
 				case HIRCItemTypeNew::AuxiliaryBus:
-					std::cout << "Auxiliary Bus" << std::endl;
+					print_verbose("Auxiliary Bus\n");
 					items.push_back(HIRCBus(reader));
 					break;
 				case HIRCItemTypeNew::AudioDevice:
-					std::cout << "Audio Device" << std::endl;
+					print_verbose("Audio Device\n");
 					items.push_back(HIRCAudioDevice(reader));
 					break;
 				default:
-					std::cout << "Unknown! will be unable to convert successfully" << std::endl;
+					print_verbose("Unknown! will be unable to convert successfully\n");
 					items.push_back(HIRCUnknown(reader));
 				}
 			}
@@ -176,83 +177,76 @@ namespace Wwise {
 		// hand off conversion to individual objects
 
 		for (uint32_t i = 0; i < num_items; i++) {
-			std::cout << "#" << i + 1 << std::endl << "\t";
-
-#ifndef NDEBUG
-			if (i + 1 == 124124) {
-				std::cout << "";
-			}
-#endif
+			print_verbose("#" + std::to_string(i + 1) + "\n\t");
 
 			std::visit(overload{
 				[&](HIRCAttenuation& item) {
-					std::cout << "Converting Attenuation" << std::endl;
+					print_verbose("Converting Attenuation\n");
 					item.Convert(writer);
 				},
 				[&](HIRCSound& item) {
-					std::cout << "Converting Sound" << std::endl;
+					print_verbose("Converting Sound\n");
 					item.Convert(writer);
 				},
 				[&](HIRCActionBase& item) {
-					std::cout << "Converting Action" << std::endl;
+					print_verbose("Converting Action\n");
 					item.Convert(writer);
 				},
 				[&](HIRCEvent& item) {
-					std::cout << "Converting Event" << std::endl;
+					print_verbose("Converting Event\n");
 					item.Convert(writer);
 				},
 				[&](HIRCRandomSequenceController& item) {
-					std::cout << "Converting Random/Sequence Container" << std::endl;
+					print_verbose("Converting Random/Sequence Container\n");
 					item.Convert(writer);
 				},
 				[&](HIRCActorMixer& item) {
-					std::cout << "Converting Actor Mixer" << std::endl;
+					print_verbose("Converting Actor Mixer\n");
 					item.Convert(writer);
 				},
 				[&](HIRCLayerContainer& item) {
-					std::cout << "Converting Layer Container" << std::endl;
+					print_verbose("Converting Layer Container\n");
 					item.Convert(writer);
 				},
 				[&](HIRCSwitchContainer& item) {
-					std::cout << "Converting Switch Container" << std::endl;
+					print_verbose("Converting Switch Container\n");
 					item.Convert(writer);
 				},
 				[&](HIRCFxShareSet& item) {
-					std::cout << "Converting FX Share Set / FX Custom" << std::endl;
+					print_verbose("Converting FX Share Set / FX Custom\n");
 					item.Convert(writer);
 				},
 				[&](HIRCMusicTrack& item) {
-					std::cout << "Converting Music Track" << std::endl;
+					print_verbose("Converting Music Track\n");
 					item.Convert(writer);
 				},
 				[&](HIRCMusicSegment& item) {
-					std::cout << "Converting Music Segment" << std::endl;
+					print_verbose("Converting Music Segment\n");
 					item.Convert(writer);
 				},
 				[&](HIRCMusicRandomSequenceController& item) {
-					std::cout << "Converting Music Random / Sequence Container" << std::endl;
+					print_verbose("Converting Music Random / Sequence Container\n");
 					item.Convert(writer);
 				},
 				[&](HIRCMusicSwitch& item) {
-					std::cout << "Converting Music Switch" << std::endl;
+					print_verbose("Converting Music Switch\n");
 					item.Convert(writer);
 				},
 				[&](HIRCBus& item) {
-					std::cout << "Converting Bus (master/auxiliary)" << std::endl;
+					print_verbose("Converting Bus (master/auxiliary)\n");
 					if (i == 0 && CONVERT_VERSION == BankVersion::V2022) {
-						std::cout << "\tDetected init.bnk bank; inserting default AudioDevices" << std::endl;
+						print_verbose("\tDetected init.bnk bank; inserting default AudioDevices\n");
 						HIRCAudioDevice::CreateDefaults(writer);
 						this->UpdateItemCount(num_items + 2, writer);
 					}
 					item.Convert(writer);
 				},
 				[&](HIRCUnknown& item) {
-					std::cerr << "ERROR: Unable to convert unknown item type! Report?" << std::endl;
+					print_verbose("ERROR: Unable to convert unknown item type! Report?\n");
 					std::exit(EXIT_FAILURE);
 				},
-				[&](auto& item)
-				{
-					std::cout << "Unhandled type" << std::endl;
+				[&](auto& item) {
+					print_verbose("Unhandled type\n");
 				}
 			}, items[i]);
 		}

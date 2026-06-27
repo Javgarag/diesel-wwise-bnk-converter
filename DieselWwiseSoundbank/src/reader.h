@@ -22,7 +22,7 @@ namespace Wwise {
 		}
 
 		template<typename T>
-		size_t SearchAddress(T pattern)
+		size_t SearchAddress(T pattern, long start_pos = 0, Header stop_header = Header::BKHD) // default BKHD will never be encountered since its at the start
 		{
 			PushCurrentPos();
 			stream.seekg(0, std::ios::end);
@@ -30,7 +30,7 @@ namespace Wwise {
 			PopLastPos();
 
 			PushCurrentPos();
-			stream.seekg(0);
+			stream.seekg(start_pos);
 
 			while (true)
 			{
@@ -47,6 +47,9 @@ namespace Wwise {
 				{
 					PopLastPos();
 					return pos;
+				}
+				else if (stop_header != Header::BKHD && current == stop_header) {
+					break;
 				}
 				stream.seekg(pos + 1);
 			}

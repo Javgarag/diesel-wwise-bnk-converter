@@ -2,7 +2,6 @@
 
 namespace Wwise {
 	DIDX::DIDX(Reader& reader) {
-		std::cout << "Reading: DIDX (data index)" << std::endl;
 		section_info = Section(reader);
 
 		data.resize(section_info.size);

@@ -105,7 +105,6 @@ namespace Wwise {
     }
 
 	STMG::STMG(Reader& reader) {
-        std::cout << "Reading: STMG (global settings)" << std::endl;
         section_info = Section(reader);
 
         if (VERSION == BankVersion::V2022) {

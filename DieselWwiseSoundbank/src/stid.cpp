@@ -20,7 +20,6 @@ namespace Wwise {
 	}
 
 	STID::STID(Reader& reader) {
-		std::cout << "Reading: STID (string mapping)" << std::endl;
 		section_info = Section(reader);
 
 		reader.Read(&type);

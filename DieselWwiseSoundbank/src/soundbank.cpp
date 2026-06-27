@@ -9,6 +9,7 @@ namespace Wwise {
 		reader = Reader(file_path);
 
 		// BKHD		
+		//std::cout << "Reading: BKHD (soundbank header)" << std::endl;
 		bank_header = BKHD(reader);
 		if (bank_header.section_info.header != Header::BKHD) {
 			std::cerr << "ERROR: File is not a Wwise Soundbank (.bnk)!" << std::endl;
@@ -27,26 +28,29 @@ namespace Wwise {
 		}
 
 		// STMG (init.bnk)
-		if (size_t stmg_address = reader.SearchAddress(Header::STMG)) {
+		//std::cout << "Reading: STMG (global settings)" << std::endl;
+		if (long stmg_address = reader.SearchAddress(Header::STMG, reader.Tell(), Header::DIDX)) {
 			reader.Seek(stmg_address);
 			global_settings = STMG(reader);
 		}
 
 		// DIDX
-		if (size_t didx_address = reader.SearchAddress(Header::DIDX)) {
+		//std::cout << "Reading: DIDX (data index)" << std::endl;
+		if (long didx_address = reader.SearchAddress(Header::DIDX, reader.Tell(), Header::DATA)) {
 			reader.Seek(didx_address);
 			data_index = DIDX(reader);
 		}
 
 		// DATA
-		if (size_t data_address = reader.SearchAddress(Header::DATA)) {
+		//std::cout << "Reading: DATA (embedded sounds)" << std::endl;
+		if (long data_address = reader.SearchAddress(Header::DATA, reader.Tell(), Header::HIRC)) {
 			reader.Seek(data_address);
 			sound_data = DATA(reader);
 		}
 
 		// HIRC
-		std::cout << "Searching for HIRC header..." << std::endl;
-		size_t hirc_address = reader.SearchAddress(Header::HIRC);
+		//std::cout << "Searching for HIRC header..." << std::endl;
+		long hirc_address = reader.SearchAddress(Header::HIRC, reader.Tell());
 		if (!hirc_address) {
 			std::cerr << "ERROR: Soundbank has no readable objects!" << std::endl;
 			std::exit(EXIT_FAILURE);
@@ -55,15 +59,15 @@ namespace Wwise {
 		objects = HIRC(reader);
 
 		// ENVS
-		std::cout << "Searching for ENVS header..." << std::endl;
-		if (size_t envs_address = reader.SearchAddress(Header::ENVS)) {
+		//std::cout << "Searching for ENVS header..." << std::endl;
+		if (long envs_address = reader.SearchAddress(Header::ENVS, reader.Tell(), Header::STID)) {
 			reader.Seek(envs_address);
 			enviroment_settings = ENVS(reader);
 		}
 
 		// STID
-		std::cout << "Searching for STID header..." << std::endl;
-		if (size_t stid_address = reader.SearchAddress(Header::STID)) {
+		//std::cout << "Searching for STID header..." << std::endl;
+		if (long stid_address = reader.SearchAddress(Header::STID, reader.Tell())) {
 			reader.Seek(stid_address);
 			string_mapping = STID(reader);
 		}
@@ -112,7 +116,7 @@ namespace Wwise {
 
 		writer.CloseFile();
 
-		std::cout << std::endl << "Successful conversion to version " << (int)new_version << std::endl;
+		std::cout << "Successful conversion to version " << (int)new_version << std::endl;
 		return true;
 	}
 } 

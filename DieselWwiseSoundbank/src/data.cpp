@@ -2,7 +2,6 @@
 
 namespace Wwise {
 	DATA::DATA(Reader& reader) {
-		std::cout << "Reading: DATA (embedded sounds)" << std::endl;
 		section_info = Section(reader);
 
 		data.resize(section_info.size);

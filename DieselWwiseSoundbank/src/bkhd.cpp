@@ -2,7 +2,6 @@
 
 namespace Wwise {
 	BKHD::BKHD(Reader& reader) {
-		std::cout << "Reading: BKHD (soundbank header)" << std::endl;
 		section_info = Section(reader);
 
 		reader.Read(&version);
