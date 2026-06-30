@@ -40,7 +40,7 @@ namespace Wwise {
 
 	void HIRCActionStop::Convert(Writer& writer) {
 		if (CONVERT_VERSION == BankVersion::V2022) {
-			writer << (uint8_t)0; // ActionStopParams didn't exist in previous versions
+			writer << (uint8_t)6; // 0110; ActionStopParams
 		}
 
 		except_params.Convert(writer);

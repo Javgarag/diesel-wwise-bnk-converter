@@ -35,8 +35,8 @@ namespace Wwise {
 
 	struct ActionStopParams {
 		unsigned char : 1;
-		bool apply_to_state_transitions : 1;
-		bool apply_to_dynamic_sequence : 1;
+		bool apply_to_state_transitions : 1; // def. true
+		bool apply_to_dynamic_sequence : 1; // def. true
 		unsigned char : 5;
 	};
 
